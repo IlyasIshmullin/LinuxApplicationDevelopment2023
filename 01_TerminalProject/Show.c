@@ -3,10 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define DX 3
-
 enum {
-    TOP_PADDING = 1, LEFT_PADDING = 1,
+    TOP_PADDING = 1,
+    LEFT_PADDING = 1,
 };
 
 void main(char* argc, char** argv)
@@ -38,7 +37,7 @@ void main(char* argc, char** argv)
 
     refresh();
 
-    win = newwin(LINES - 2 * DX, COLS - 2 * DX, DX, DX);
+    win = newwin(LINES, COLS, 0, 0);
     keypad(win, TRUE);
     scrollok(win, TRUE);
     box(win, 0, 0);
@@ -47,9 +46,10 @@ void main(char* argc, char** argv)
     //     wprintw(win, "%d", conter);
     //     box(win, -1, 0);
     // }
-    size_t height = LINES - 2 * DX - 2;
+    LINES--;
+    size_t height = LINES - 1;
     size_t width = COLS - 2;
- 
+
     for (int conter = 0; conter < cnt_lines && conter < height; conter++) {
         wprintw(win, " %d:\t%s", conter, lines[conter]);
         box(win, 0, 0);
@@ -58,11 +58,21 @@ void main(char* argc, char** argv)
     while (true) {
         c = wgetch(win);
         switch (c) {
+        case KEY_DOWN:
         case 32:
-            real_index++;
             werase(win);
-            for (int con = real_index; con < cnt_lines && con < height; con++) {
-                wprintw(win, "%d:\t%s", con, lines[con]);
+            real_index++;
+            for (int con = real_index; con < cnt_lines && con < height + real_index; con++) {
+                wprintw(win, " %d:\t%s", con, lines[con]);
+                box(win, 0, 0);
+            }
+            break;
+
+        case KEY_UP:
+            werase(win);
+            real_index--;
+            for (int con = real_index; con < cnt_lines && con < height + real_index; con++) {
+                wprintw(win, " %d:\t%s", con, lines[con]);
                 box(win, 0, 0);
             }
             break;
