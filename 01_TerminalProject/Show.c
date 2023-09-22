@@ -62,6 +62,8 @@ void main(char* argc, char** argv)
         case 32:
             werase(win);
             real_index++;
+            if (real_index > cnt_lines)
+                real_index = 0;
             for (int con = real_index; con < cnt_lines && con < height + real_index; con++) {
                 wprintw(win, " %d:\t%s", con, lines[con]);
                 box(win, 0, 0);
@@ -71,6 +73,8 @@ void main(char* argc, char** argv)
         case KEY_UP:
             werase(win);
             real_index--;
+            if (real_index < 0)
+                real_index = cnt_lines - height;
             for (int con = real_index; con < cnt_lines && con < height + real_index; con++) {
                 wprintw(win, " %d:\t%s", con, lines[con]);
                 box(win, 0, 0);
