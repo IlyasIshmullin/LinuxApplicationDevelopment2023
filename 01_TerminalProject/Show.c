@@ -58,7 +58,9 @@ void main(char* argc, char** argv)
     while (true) {
         c = wgetch(win);
         switch (c) {
+        
         case KEY_DOWN:
+        case 106:
         case 32:
             werase(win);
             real_index++;
@@ -70,6 +72,7 @@ void main(char* argc, char** argv)
             }
             break;
 
+        case 107:
         case KEY_UP:
             werase(win);
             real_index--;
